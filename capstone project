@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CANDIDATES 5
+#define MAX_VOTERS 5
+
+typedef struct {
+    int id;
+    char name[50];
+} Candidate;
+
+typedef struct {
+    int voterID;
+} Voter;
+
+// Predefined voter IDs (for verification)
+Voter voters[MAX_VOTERS] = {
+    {101}, {102}, {103}, {104}, {105}
+};
+
+Candidate candidates[MAX_CANDIDATES];
+int candidateCount = 0;
+
+// Function to enroll a candidate
+void enrollCandidate() {
+    if (candidateCount == MAX_CANDIDATES) {
+        printf("Candidate limit reached!\n");
+        return;
+    }
+    Candidate c;
+    printf("Enter candidate ID: ");
+    scanf("%d", &c.id);
+    getchar(); // consume newline left by scanf
+    printf("Enter candidate name: ");
+    fgets(c.name, sizeof(c.name), stdin);
+    // Remove trailing newline from fgets
+    c.name[strcspn(c.name, "\n")] = 0;
+
+    candidates[candidateCount++] = c;
+    printf("Candidate enrolled successfully!\n");
+}
+
+// Function to verify voter
+int verifyVoter(int voterID) {
+    for (int i = 0; i < MAX_VOTERS; i++) {
+        if (voters[i].voterID == voterID) {
+            return 1; // verified
+        }
+    }
+    return 0; // not verified
+}
+
+// Function to display candidates
+void displayCandidates() {
+    if (candidateCount == 0) {
+        printf("No candidates enrolled yet.\n");
+        return;
+    }
+    printf("List of Candidates:\n");
+    for (int i = 0; i < candidateCount; i++) {
+        printf("ID: %d, Name: %s\n", candidates[i].id, candidates[i].name);
+    }
+}
+
+int main() {
+    int choice, voterID;
+
+    while (1) {
+        printf("\nCandidate Enrollment and Voter Verification System\n");
+        printf("1. Enroll Candidate\n");
+        printf("2. Verify Voter\n");
+        printf("3. Display Candidates\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                enrollCandidate();
+                break;
+            case 2:
+                printf("Enter voter ID to verify: ");
+                scanf("%d", &voterID);
+                if (verifyVoter(voterID)) {
+                    printf("Voter verified successfully.\n");
+                } else {
+                    printf("Voter verification failed. Invalid ID.\n");
+                }
+                break;
+            case 3:
+                displayCandidates();
+                break;
+            case 4:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
