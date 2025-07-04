@@ -1,0 +1,36 @@
+#include <stdio.h>
+
+#define MAX_PASSENGERS 3
+
+int main() {
+    char names[MAX_PASSENGERS][30];
+    int ticketNumbers[MAX_PASSENGERS];
+    int distances[MAX_PASSENGERS];
+    int i, totalDistance = 0;
+
+    printf("Bus Ticketing System\n");
+
+    for (i = 0; i < MAX_PASSENGERS; i++) {
+        printf("Enter passenger %d name: ", i + 1);
+        fgets(names[i], 30, stdin);
+
+        printf("Enter ticket number: ");
+        scanf("%d", &ticketNumbers[i]);
+
+        printf("Enter distance traveled (km): ");
+        scanf("%d", &distances[i]);
+
+        getchar(); // consume newline left by scanf
+        totalDistance += distances[i];
+    }
+
+    printf("\nPassenger Details:\n");
+    for (i = 0; i < MAX_PASSENGERS; i++) {
+        printf("Passenger %d: %sTicket No: %d, Distance: %d km\n",
+            i + 1, names[i], ticketNumbers[i], distances[i]);
+    }
+
+    printf("\nTotal distance traveled by all passengers: %d km\n", totalDistance);
+
+    return 0;
+}
